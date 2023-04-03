@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native/types";
+import { View, Text, StyleSheet } from "react-native";
 
 export default function Search() {
   return (
