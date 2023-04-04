@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons'
 import { Logo } from "../../components/Logo";
 
