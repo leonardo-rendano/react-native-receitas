@@ -2,8 +2,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Detail from '../pages/detail'
 import Home from '../pages/home'
 import Search from '../pages/search'
+import { PropsNavigationStack } from "./types";
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<PropsNavigationStack>()
 
 export function StackRoutes() {
   return (
