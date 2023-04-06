@@ -4,6 +4,11 @@ export type IngredientsProps = {
   amount: string
 }
 
+export type InstructionsProps = {
+  id: string,
+  text: string
+}
+
 export type DataProps = {
   id: string,
   name: string,
@@ -11,7 +16,8 @@ export type DataProps = {
   time: number,
   cover: string,
   video: string,
-  ingredients: IngredientsProps[]
+  ingredients: IngredientsProps[],
+  instructions: InstructionsProps[]
 }
 
 export type FoodListProps = {
