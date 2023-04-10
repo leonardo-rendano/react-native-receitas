@@ -1,27 +1,16 @@
-import React, { useLayoutEffect } from "react";
-import { View, Text, StyleSheet, Pressable, ScrollView, Image } from "react-native";
+import React, { useLayoutEffect, useState } from "react";
+import { View, Text, StyleSheet, Pressable, ScrollView, Image, Modal, Share } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Entypo, AntDesign, Feather } from '@expo/vector-icons'
-import { DataProps } from "../../components/FoodList/types";
 import { Ingredients } from "../../components/Ingredients";
 import { Instructions } from "../../components/Instructions";
-
-type RouteDataProps = {
-  data: DataProps
-}
-
-type RouteParamsProps = {
-  params: RouteDataProps
-  Readonly: { key: string; name: string; path?: string; }
-  key: any,
-  name: any
-}
+import { VideoView } from "../../components/Video";
+import { RouteParamsProps } from "./types";
 
 export default function Detail() {
   const route = useRoute<RouteParamsProps>()
   const navigation = useNavigation()
-
-  console.log(route.params?.data)
+  const [isShownVideo, setIsShownVideo] = useState<boolean>(false)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -38,9 +27,24 @@ export default function Detail() {
     })
   }, [navigation, route.params?.data])
 
+  function handleOpenVideo() {
+    setIsShownVideo(true)
+  }
+
+  async function shareReceipe() {
+    try {
+      await Share.share({
+        url: 'https://sujeitoprogramador.com',
+        message: `Receita: ${route.params?.data.name}\nIngredientes: ${route.params?.data.total_ingredients}\nVi lá no app Receita Fácil!`
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <ScrollView contentContainerStyle={{ paddingBottom: 14 }} style={styles.container} showsVerticalScrollIndicator={false}>
-      <Pressable>
+      <Pressable onPress={handleOpenVideo}>
         <View style={styles.playIcon}>
           <AntDesign
             name="playcircleo"
@@ -58,7 +62,7 @@ export default function Detail() {
           <Text style={styles.title}>{route.params?.data.name}</Text>
           <Text style={styles.ingredientsText}>Ingredientes ({route.params?.data.total_ingredients})</Text>
         </View>
-        <Pressable>
+        <Pressable onPress={shareReceipe}>
           <Feather
             name="share-2"
             size={24}
@@ -89,6 +93,13 @@ export default function Detail() {
           )
         })
       }
+
+      <Modal visible={isShownVideo} animationType='slide'>
+        <VideoView
+          handleClose={() => setIsShownVideo(false)}
+          videoUrl={route.params?.data.video}
+        />
+      </Modal>
     </ScrollView>
   )
 }
