@@ -26,21 +26,11 @@ export default function Detail() {
       title: route.params?.data ? route.params?.data.name : "Detalhes da receita",
       headerRight: () => (
         <Pressable onPress={() => handleFavouriteReceipe(route.params?.data)}>
-          {
-            isFavouriteReceipe ? (
-              <Entypo
-                name="heart"
-                size={28}
-                color="#ff4141"
-              />
-            ) : (
-              <Entypo
-                name="heart-outlined"
-                size={28}
-                color="#ff4141"
-              />
-            )
-          }
+          <Entypo
+            name={isFavouriteReceipe ? "heart" : "heart-outlined"}
+            size={28}
+            color="#ff4141"
+          />
         </Pressable>
       )
     })
