@@ -4,7 +4,7 @@ import { DataProps, FoodListProps } from "../components/FoodList/types"
 export type PropsNavigationStack = {
   Home: undefined,
   Detail: { data: DataProps },
-  Search: undefined
+  Search: { name: string }
 }
 
 export type PropsStack = NativeStackNavigationProp<PropsNavigationStack>

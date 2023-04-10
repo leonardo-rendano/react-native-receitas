@@ -4,9 +4,12 @@ import { Ionicons } from '@expo/vector-icons'
 import { Logo } from "../../components/Logo";
 import api from "../../services/api";
 import { FoodList } from "../../components/FoodList";
+import { useNavigation } from "@react-navigation/native";
+import { PropsStack } from "../../routes/types";
 
 export default function Home() {
-  const [inputValue, setInputvalue] = useState<string>()
+  const navigation = useNavigation<PropsStack>()
+  const [inputValue, setInputvalue] = useState<string>('')
   const [foods, setFoods] = useState([])
 
   useEffect(() => {
@@ -23,7 +26,11 @@ export default function Home() {
   }, [])
 
   function handleSearch(): void {
-    alert(`Você digitou ${inputValue}`)
+    if (!inputValue) return;
+
+    let input = inputValue
+    setInputvalue('')
+    navigation.navigate('Search', { name: input })
   }
 
   return (
