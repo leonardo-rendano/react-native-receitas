@@ -5,27 +5,56 @@ import { Entypo, AntDesign, Feather } from '@expo/vector-icons'
 import { Ingredients } from "../../components/Ingredients";
 import { Instructions } from "../../components/Instructions";
 import { VideoView } from "../../components/Video";
+import { isFavourite, saveFavourites, removeItem } from '../../utils/storage'
 import { RouteParamsProps } from "./types";
 
 export default function Detail() {
   const route = useRoute<RouteParamsProps>()
   const navigation = useNavigation()
   const [isShownVideo, setIsShownVideo] = useState<boolean>(false)
+  const [isFavouriteReceipe, setIsFavouriteReceipe] = useState<boolean>(false)
 
   useLayoutEffect(() => {
+    async function getStatusFavourites() {
+      const receipeFavourite = await isFavourite(route.params?.data)
+      setIsFavouriteReceipe(receipeFavourite)
+    }
+
+    getStatusFavourites()
+
     navigation.setOptions({
       title: route.params?.data ? route.params?.data.name : "Detalhes da receita",
       headerRight: () => (
-        <Pressable onPress={() => alert('Pressionou')}>
-          <Entypo
-            name="heart"
-            size={28}
-            color="#ff4141"
-          />
+        <Pressable onPress={() => handleFavouriteReceipe(route.params?.data)}>
+          {
+            isFavouriteReceipe ? (
+              <Entypo
+                name="heart"
+                size={28}
+                color="#ff4141"
+              />
+            ) : (
+              <Entypo
+                name="heart-outlined"
+                size={28}
+                color="#ff4141"
+              />
+            )
+          }
         </Pressable>
       )
     })
-  }, [navigation, route.params?.data])
+  }, [navigation, route.params?.data, isFavouriteReceipe])
+
+  async function handleFavouriteReceipe(receipe: any) {
+    if (isFavouriteReceipe) {
+      await removeItem(receipe.id)
+      setIsFavouriteReceipe(false)
+    } else {
+      await saveFavourites('@app-receitas', receipe)
+      setIsFavouriteReceipe(true)
+    }
+  }
 
   function handleOpenVideo() {
     setIsShownVideo(true)
